@@ -22,7 +22,7 @@ class userService {
       }
 
       const hashPassword = await bcrypt.hash(password, 5)
-      const user = await User.create({ ...req.body, password: hashPassword })
+      const user = await User.create({ ...req.body, password: hashPassword, is_admin: false })
 
       return res.json(user)
     } catch (e) {
@@ -57,7 +57,7 @@ class userService {
           return res.status(400).json({ error: "User with this email already exists" })
         }
       }
-      user.update({...req.body})
+      user.update({ ...req.body })
       return res.json()
     } catch (e) {
       next(ApiError.badRequest(e.message))
@@ -69,8 +69,8 @@ class userService {
       const { id } = req.params
       const user = await User.findOne({
         where: {
-          id
-        }
+          id,
+        },
       })
       return res.json(user)
     } catch (e) {
@@ -89,11 +89,11 @@ class userService {
 
   async delete(req, res, next) {
     try {
-      const {id} = req.params
+      const { id } = req.params
       const user = User.destroy({
         where: {
-          id
-        }
+          id,
+        },
       })
       return res.json(user)
     } catch (e) {

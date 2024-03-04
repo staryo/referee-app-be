@@ -38,6 +38,7 @@ router.put(`${UPDATE}/:id`,
       password: { type: "string", minLength: 8 },
       passwordRepeated: { type: "string", minLength: 8 },
       phone: { type: "string", minLength: 6 },
+      is_admin: {type: "boolean"}
     },
     required: [],
   }),

@@ -35,14 +35,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      last_time_online: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-      is_active: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-      },
       is_admin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
