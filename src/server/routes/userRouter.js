@@ -4,32 +4,31 @@ const userService = require("../services/userService")
 
 const validateRequestMiddleware = require("../middleware/validateRequestMiddleware")
 const authMiddleware = require("../middleware/authMiddleware")
+const adminMiddleware = require("../middleware/adminMiddleware")
 
 const {
-  CREATE, UPDATE, DATA, DELETE,
+  CREATE, UPDATE, DATA, DELETE, GET_ALL,
 } = require("./consts");
 
 // --- /api/user/create [POST] --- //
 router.post(CREATE,
-  // authMiddleware,
   validateRequestMiddleware({
     type: "object",
     properties: {
       email: { type: "string", format: "email" },
       first_name: { type: "string", minLength: 2 },
       last_name: { type: "string", minLength: 2 },
-      phone: { type: "string", minLength: 2 },
       password: { type: "string", minLength: 8 },
-      passwordRepeated: { type: "string", minLength: 8 },
+      repeat_password: { type: "string", minLength: 8 },
     },
-    required: ["email", "first_name", "last_name", "phone", "password", "passwordRepeated"],
+    required: ["email", "first_name", "last_name", "password", "repeat_password"],
   }),
   userService.create,
 )
 
-// --- /api/user/create [PUT] --- //
+// --- /api/user/update/:id [PUT] --- //
 router.put(`${UPDATE}/:id`,
-  // authMiddleware,
+  authMiddleware,
   validateRequestMiddleware({
     type: "object",
     properties: {
@@ -45,15 +44,22 @@ router.put(`${UPDATE}/:id`,
   userService.update,
 )
 
-// --- /api/user/data [GET] --- //
-router.get(DATA,
-  // authMiddleware,
+// --- /api/user/get_all [GET] --- //
+router.get(GET_ALL,
+  authMiddleware,
+  userService.get_all,
+)
+
+// --- /api/user/data/:id [GET] --- //
+router.get(`${DATA}/:id`,
+  authMiddleware,
   userService.data,
 )
 
-// --- /api/user/delete [DELETE] --- //
+// --- /api/user/delete/:id [DELETE] --- //
 router.delete(`${DELETE}/:id`,
-  // authMiddleware,
+  authMiddleware,
+  adminMiddleware,
   userService.delete,
 )
 

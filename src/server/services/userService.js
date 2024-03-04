@@ -66,6 +66,20 @@ class userService {
 
   async data(req, res, next) {
     try {
+      const { id } = req.params
+      const user = await User.findOne({
+        where: {
+          id
+        }
+      })
+      return res.json(user)
+    } catch (e) {
+      next(ApiError.badRequest(e.message))
+    }
+  }
+
+  async get_all(req, res, next) {
+    try {
       const users = await User.findAll()
       return res.json(users)
     } catch (e) {
