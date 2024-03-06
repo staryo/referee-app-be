@@ -28,7 +28,8 @@
     "start": "npm run build && node ./src/server/index.js"
   },
   "engines": {
-    "node": "20.x"
+    "node": "v18.17.1",
+    "npm": "10.2.4"
   },
   "author": "",
   "license": "ISC"
