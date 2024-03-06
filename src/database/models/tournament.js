@@ -4,7 +4,11 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class tournament extends Model {
     static associate(models) {
-
+      tournament.hasMany(models.team); // Adds tournamentId to Team
+      tournament.hasMany(models.player); // Adds tournamentId to Player
+      tournament.hasMany(models.match); // Adds tournamentId to Match
+      tournament.belongsTo(models.user, {as: "owner_id"})
+      tournament.belongsToMany(models.user, {through: "tournament_user"})
     }
   }
 
@@ -17,37 +21,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: {
         type: DataTypes.STRING,
-        
         allowNull: false,
-       
       },
       sport_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      default_number_of_periouds: {
+      default_number_of_periods: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      default_perioud_duration: {
+      default_period_duration: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      team_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      match_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      player_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
       },
     },
     {

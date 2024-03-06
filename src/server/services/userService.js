@@ -6,9 +6,9 @@ const User = db.user
 class userService {
   async create(req, res, next) {
     try {
-      const { email, password, passwordRepeated } = req.body
+      const { email, password, repeat_password } = req.body
 
-      if (password !== passwordRepeated) {
+      if (password !== repeat_password) {
         return next(ApiError.badRequest("passwords do not match"))
       }
 

@@ -2,13 +2,15 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class events extends Model {
+  class event extends Model {
     static associate(models) {
-
+      event.belongsTo(models.player, { as: 'author' }); // Adds authorId to Event
+      event.belongsTo(models.match)
+      event.belongsToMany(models.player, { through: 'assistants' }); // Creates a join table player_events with eventId and playerId
     }
   }
 
-  events.init(
+  event.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -32,16 +34,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      assistans_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
     },
     {
       sequelize,
-      modelName: "events",
+      modelName: "event",
     },
   );
 
-  return events;
+  return event;
 };

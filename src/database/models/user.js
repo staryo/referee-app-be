@@ -4,7 +4,8 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     static associate(models) {
-
+      user.hasMany(models.tournament, {as: "owner_id"})
+      user.belongsToMany(models.tournament, {through: "tournament_user"})
     }
   }
 
