@@ -4,9 +4,8 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class event extends Model {
     static associate(models) {
-      event.belongsTo(models.player, { as: 'author' }); // Adds authorId to Event
       event.belongsTo(models.match)
-      event.belongsToMany(models.player, { through: 'assistants' }); // Creates a join table player_events with eventId and playerId
+      event.belongsToMany(models.player, { through: 'event_player' }); // Creates a join table player_events with eventId and playerId
     }
   }
 

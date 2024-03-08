@@ -9,7 +9,7 @@ class authService {
     try {
       const { email, password } = req.body
 
-      const user = await User.findOne({
+      const user = await User.scope('withPassword').findOne({
         where: {
           email: email,
         },
@@ -40,7 +40,6 @@ class authService {
           id: req.user.id,
         },
       })
-      user.password = "isHidden"
       return res.json(user)
     } catch (e) {
       next(ApiError.badRequest(e.message))

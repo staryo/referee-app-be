@@ -4,8 +4,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     static associate(models) {
-      user.hasMany(models.tournament, {as: "owner_id"})
-      user.belongsToMany(models.tournament, {through: "tournament_user"})
+      user.belongsToMany(models.tournament, { through: "tournament_user" })
     }
   }
 
@@ -38,12 +37,20 @@ module.exports = (sequelize, DataTypes) => {
       },
       is_admin: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
-      }
+        defaultValue: false,
+      },
     },
     {
       sequelize,
       modelName: "user",
+      defaultScope: {
+        attributes: { exclude: ["password"] },
+      },
+      scopes: {
+        withPassword: {
+          attributes: {},
+        },
+      },
     },
   );
 

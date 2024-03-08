@@ -1,16 +1,23 @@
 const { db } = require("../../database/models")
 const ApiError = require("../error/ApiError");
-const { Op } = require('sequelize');
+const { Op } = require("sequelize");
 const Tournament = db.tournament
-const User=db.user
-const Player=db.player
-const Match=db.match
+const Player = db.player
+const Match = db.match
+const User = db.user
+
 class tournamentService {
   async create(req, res, next) {
     try {
       const tournament_data = req.body
-
+      console.log(req.user)
+      const user = await User.findOne({
+        where: {
+          id: req.user.id,
+        },
+      })
       const tournament = await Tournament.create(tournament_data)
+      await tournament.addUser(user, { through: { is_owner: true } })
 
       return res.json(tournament)
     } catch (e) {
@@ -21,26 +28,26 @@ class tournamentService {
   async update(req, res, next) {
     try {
       const { id } = req.params
+      const user = req.user
       const tournament_data = req.body
       const tournament = Tournament.findOne({
         where: {
-          owner_id,
+          id,
+        },
+        include: {
+          User,
+          through: { where: { is_owner: true } },
         },
       });
-
-
-      const candidate = await User.findOne({
-        where: {
-          tournment_user,
-        },
-      });
-      if (tournament.id !== candidate) {
-        return res.status(400).json({ error: "You are not owner of this tournament, and you don't be able to change data" })
+      console.log(tournament)
+      if (tournament.users[0].userId !== user.id && !user.is_admin) {
+        return res.status(400).json({
+          error: "You are not owner of this tournament, and you are not able to change data",
+        })
       }
-      if (tournament.id == candidate) {
-        tournament.update(tournament_data)
-      }
-      return res.json()
+      return res.json(
+        await tournament.update(tournament_data),
+      )
     } catch (e) {
       next(ApiError.badRequest(e.message))
     }
@@ -52,6 +59,12 @@ class tournamentService {
       const tournament = await Tournament.findOne({
         where: {
           id,
+        },
+        include: {
+          User,
+          where: {
+            id: req.user.id,
+          },
         },
       })
       return res.json(tournament)
@@ -69,22 +82,22 @@ class tournamentService {
           id: id,
         },
         include: [{
-        model: Player,
+          model: Player,
           where: {
             last_name: {
-              [Op.like]: `%${player}%`
-            }
-          }
-        }]
-      })      
-      
-    
-   
+              [Op.like]: `%${player}%`,
+            },
+          },
+        }],
+      })
+
+
       return res.json(tournament)
     } catch (e) {
       next(ApiError.badRequest(e.message))
     }
   }
+
   async match_data(req, res, next) {
     try {
       const { id } = req.params
@@ -95,24 +108,34 @@ class tournamentService {
         },
         include: [{
           model: Match,
-            where:{
-              name: {
-                [Op.like]: `%${match}%`
-              }
-            }
-          }]
-        })   
-    
-    
+          where: {
+            name: {
+              [Op.like]: `%${match}%`,
+            },
+          },
+        }],
+      })
+
+
       return res.json(matches)
     } catch (e) {
       next(ApiError.badRequest(e.message))
     }
   }
+
   async get_all(req, res, next) {
     try {
-      const tournament = await Tournament.findAll()
-      return res.json(tournament)
+      const tournament = await Tournament.findAll({
+        include: {
+          model: User,
+          where: {
+            id: req.user.id,
+          },
+        },
+      })
+      return res.json(
+        tournament.filter((row) => row.users.length > 0)
+      )
     } catch (e) {
       next(ApiError.badRequest(e.message))
     }
@@ -121,12 +144,11 @@ class tournamentService {
   async delete(req, res, next) {
     try {
       const { id } = req.params
-      const tournament = Tournament.destroy({
+      return res.json(await Tournament.destroy({
         where: {
           id,
         },
-      })
-      return res.json(tournament)
+      }))
     } catch (e) {
       next(ApiError.badRequest(e.message))
     }

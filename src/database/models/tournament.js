@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
       tournament.hasMany(models.team); // Adds tournamentId to Team
       tournament.hasMany(models.player); // Adds tournamentId to Player
       tournament.hasMany(models.match); // Adds tournamentId to Match
-      tournament.belongsTo(models.user, {as: "owner_id"})
       tournament.belongsToMany(models.user, {through: "tournament_user"})
     }
   }
