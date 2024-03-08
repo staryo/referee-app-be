@@ -132,6 +132,9 @@ class tournamentService {
             id: req.user.id,
           },
         },
+        order: [
+          ['createdAt', 'DESC'],
+        ],
       })
       return res.json(
         tournament.filter((row) => row.users.length > 0)
