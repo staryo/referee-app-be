@@ -30,7 +30,7 @@ class tournamentService {
       const { id } = req.params
       const user = req.user
       const tournament_data = req.body
-      const tournament = Tournament.findOne({
+      const tournament = await Tournament.findOne({
         where: {
           id,
         },
@@ -60,12 +60,20 @@ class tournamentService {
         where: {
           id,
         },
-        include: {
-          User,
-          where: {
-            id: req.user.id,
+        include: [
+          {
+            model: User,
+            where: {
+              id: req.user.id,
+            },
           },
-        },
+          {
+            model: Match,
+          },
+          {
+            model: Player,
+          },
+        ],
       })
       return res.json(tournament)
     } catch (e) {
@@ -133,11 +141,11 @@ class tournamentService {
           },
         },
         order: [
-          ['createdAt', 'DESC'],
+          ["createdAt", "DESC"],
         ],
       })
       return res.json(
-        tournament.filter((row) => row.users.length > 0)
+        tournament.filter((row) => row.users.length > 0),
       )
     } catch (e) {
       next(ApiError.badRequest(e.message))
