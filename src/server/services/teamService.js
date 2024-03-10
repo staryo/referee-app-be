@@ -1,21 +1,21 @@
 const { db } = require("../../database/models");
 const ApiError = require("../error/ApiError");
 const Tournament = db.tournament
-const Player = db.player
+const Team = db.team
 
-class playerService {
+class teamService {
   async create(req, res, next) {
     try {
-      const player_data = req.body
+      const team_data = req.body
       const tournament = await Tournament.findOne({
         where: {
           id: req.body.tournament_id,
         },
       })
-      const player = await Player.create(player_data)
-      await tournament.addPlayer(player)
+      const team = await Team.create(team_data)
+      await tournament.addTeam(team)
 
-      return res.json(player)
+      return res.json(team)
     } catch (e) {
       next(ApiError.internal(e.message))
     }
@@ -25,15 +25,15 @@ class playerService {
     try {
       const { id } = req.params
 
-      const player_data = req.body
-      const player = Player.findOne({
+      const team_data = req.body
+      const team = Team.findOne({
         where: {
           id,
         },
       });
 
       return res.json(
-        await player.update(player_data),
+        await team.update(team_data),
       )
     } catch (e) {
       next(ApiError.badRequest(e.message))
@@ -43,7 +43,7 @@ class playerService {
   async data(req, res, next) {
     try {
       const { id } = req.params
-      const player = await Player.findOne({
+      const team = await Team.findOne({
         where: {
           id,
         },
@@ -51,7 +51,7 @@ class playerService {
           Tournament,
         },
       })
-      return res.json(player)
+      return res.json(team)
     } catch (e) {
       next(ApiError.badRequest(e.message))
     }
@@ -73,4 +73,4 @@ class playerService {
 
 }
 
-module.exports = new playerService()
+module.exports = new teamService()

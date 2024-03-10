@@ -3,6 +3,7 @@ const ApiError = require("../error/ApiError");
 const Tournament = db.tournament
 const Player = db.player
 const Match = db.match
+const Team = db.team
 const User = db.user
 
 class tournamentService {
@@ -71,6 +72,9 @@ class tournamentService {
           },
           {
             model: Player,
+          },
+          {
+            model: Team,
           },
         ],
       })
