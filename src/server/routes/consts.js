@@ -5,6 +5,7 @@ const API = "/api"
 const AUTH = "/auth"
 const USER = "/user"
 const TOURNAMENT = "/tournament"
+const PLAYER = "/player"
 
 // --- methods api --- //
 const SIGNUP = "/signup"
@@ -17,7 +18,7 @@ const UPDATE = "/update"
 const GET_ALL = "/get_all"
 
 module.exports = {
-  API, USER, TOURNAMENT,
+  API, USER, TOURNAMENT, PLAYER,
   AUTH, UPDATE,
   SIGNUP, LOGIN, LOGOUT,
   CREATE, DATA, DELETE, GET_ALL,

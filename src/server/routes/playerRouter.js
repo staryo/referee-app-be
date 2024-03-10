@@ -7,7 +7,7 @@ const authMiddleware = require("../middleware/authMiddleware")
 const adminMiddleware = require("../middleware/adminMiddleware")
 
 const {
-  CREATE, UPDATE, DATA, DELETE, 
+  CREATE, UPDATE, DATA, DELETE,
 } = require("./consts");
 
 // --- /api/player/create [POST] --- //
@@ -16,13 +16,12 @@ router.post(CREATE,
   validateRequestMiddleware({
     type: "object",
     properties: {
-      first_name: { type: "string",minLength: 2  },
+      first_name: { type: "string", minLength: 2 },
       last_name: { type: "string", minLength: 2 },
       description: { type: "string" },
-      
-
+      tournament_id: { type: "number" },
     },
-    required: ["first_name", "last_name", "description"],
+    required: ["first_name", "last_name", "description", "tournament_id"],
   }),
   playerService.create,
 )
@@ -33,18 +32,16 @@ router.put(`${UPDATE}/:id`,
   validateRequestMiddleware({
     type: "object",
     properties: {
-        first_name: { type: "string",minLength: 2  },
-        last_name: { type: "string", minLength: 2 },
-        description: { type: "string" },
-        
-  
-      },
+      first_name: { type: "string", minLength: 2 },
+      last_name: { type: "string", minLength: 2 },
+      description: { type: "string" },
+
+
+    },
     required: [],
   }),
   playerService.update,
 )
-
-
 
 // --- /api/player/data/:id [GET] --- //
 router.get(`${DATA}/:id`,

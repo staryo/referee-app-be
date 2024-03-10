@@ -1,6 +1,5 @@
 const { db } = require("../../database/models")
 const ApiError = require("../error/ApiError");
-const { Op } = require("sequelize");
 const Tournament = db.tournament
 const Player = db.player
 const Match = db.match
@@ -84,22 +83,14 @@ class tournamentService {
   async player_data(req, res, next) {
     try {
       const { id } = req.params
-      const player = req.query;
-      const tournament = await Tournament.findMany({
+      const tournament = await Tournament.findAll({
         where: {
           id: id,
         },
         include: [{
           model: Player,
-          where: {
-            last_name: {
-              [Op.like]: `%${player}%`,
-            },
-          },
         }],
       })
-
-
       return res.json(tournament)
     } catch (e) {
       next(ApiError.badRequest(e.message))
@@ -109,18 +100,12 @@ class tournamentService {
   async match_data(req, res, next) {
     try {
       const { id } = req.params
-      const match = req.query;
-      const matches = await Tournament.findMany({
+      const matches = await Tournament.findAll({
         where: {
           id: id,
         },
         include: [{
           model: Match,
-          where: {
-            name: {
-              [Op.like]: `%${match}%`,
-            },
-          },
         }],
       })
 

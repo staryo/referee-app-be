@@ -1,24 +1,22 @@
 const { db } = require("../../database/models");
-const tournament = require("../../database/models/tournament");
 const ApiError = require("../error/ApiError");
-const { Op } = require("sequelize");
 const Tournament = db.tournament
 const Player = db.player
-const Match = db.match
-const User = db.user
 
 class playerService {
   async create(req, res, next) {
     try {
       const player_data = req.body
-      console.log(req.user)
-      const player_id = await Tournament.findOne({
+      console.log(req.body)
+      const tournament = await Tournament.findOne({
         where: {
-          id: req.tournament.id,
+          id: req.body.tournament_id,
         },
       })
+      console.log(tournament)
       const player = await Player.create(player_data)
-      await player.addUser(player_id)
+      console.log(player)
+      await tournament.addPlayer(player)
 
       return res.json(player)
     } catch (e) {
@@ -29,22 +27,14 @@ class playerService {
   async update(req, res, next) {
     try {
       const { id } = req.params
-    
+
       const player_data = req.body
-      const  player= Player.findOne({
+      const player = Player.findOne({
         where: {
-            id,
-          },
-          include: {
-            Tournament,
-            where: {
-              id: req.tournament.id,
-            },
-          },
-       
+          id,
+        },
       });
-      console.log(player)
-    
+
       return res.json(
         await player.update(player_data),
       )
@@ -62,9 +52,6 @@ class playerService {
         },
         include: {
           Tournament,
-          where: {
-            id: req.tournament.id,
-          },
         },
       })
       return res.json(player)
@@ -72,7 +59,6 @@ class playerService {
       next(ApiError.badRequest(e.message))
     }
   }
-
 
 
   async delete(req, res, next) {
