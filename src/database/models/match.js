@@ -22,6 +22,14 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
       },
+      current_period: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
+      is_period_completed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      }
     },
     {
       sequelize,
