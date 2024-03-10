@@ -56,7 +56,7 @@ class playerService {
   async data(req, res, next) {
     try {
       const { id } = req.params
-      const player = await Player.findOne({
+      const player = await Player.findMany({
         where: {
           id,
         },
