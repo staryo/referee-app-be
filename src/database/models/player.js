@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
   class player extends Model {
     static associate(models) {
       player.belongsTo(models.tournament); // Adds tournamentId to Player
-      player.belongsToMany(models.event, { through: 'event_player' }); // Adds eventId to Player
-      player.belongsToMany(models.match, {through: "match_player"})
+      player.belongsToMany(models.event, { through: "event_player" }); // Adds eventId to Player
+      player.belongsToMany(models.match, { through: "match_player" })
     }
   }
 

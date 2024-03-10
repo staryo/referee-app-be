@@ -1,6 +1,6 @@
 const Router = require("express")
 const router = new Router()
-const playerService = require("../services/playerService")
+const matchService = require("../services/matchService")
 
 const validateRequestMiddleware = require("../middleware/validateRequestMiddleware")
 const authMiddleware = require("../middleware/authMiddleware")
@@ -10,23 +10,23 @@ const {
   CREATE, UPDATE, DATA, DELETE,
 } = require("./consts");
 
-// --- /api/player/create [POST] --- //
+// --- /api/match/create [POST] --- //
 router.post(CREATE,
   authMiddleware,
   validateRequestMiddleware({
     type: "object",
     properties: {
-      first_name: { type: "string", minLength: 2 },
-      last_name: { type: "string", minLength: 2 },
-      description: { type: "string" },
-      tournament_id: { type: "number" },
+      name: { type: "string", minLength: 2 },
+      team1_id: { type: "number" },
+      team2_id: { type: "number" },
+      tournament_id: { type: "number" }
     },
-    required: ["first_name", "last_name", "description", "tournament_id"],
+    required: ["name", "team1_id", "team2_id", "tournament_id"],
   }),
-  playerService.create,
+  matchService.create,
 )
 
-// --- /api/player/update/:id [PUT] --- //
+// --- /api/match/update/:id [PUT] --- //
 router.put(`${UPDATE}/:id`,
   authMiddleware,
   validateRequestMiddleware({
@@ -35,23 +35,25 @@ router.put(`${UPDATE}/:id`,
       first_name: { type: "string", minLength: 2 },
       last_name: { type: "string", minLength: 2 },
       description: { type: "string" },
+
+
     },
     required: [],
   }),
-  playerService.update,
+  matchService.update,
 )
 
-// --- /api/player/data/:id [GET] --- //
+// --- /api/match/data/:id [GET] --- //
 router.get(`${DATA}/:id`,
   authMiddleware,
-  playerService.data,
+  matchService.data,
 )
 
-// --- /api/player/delete/:id [DELETE] --- //
+// --- /api/match/delete/:id [DELETE] --- //
 router.delete(`${DELETE}/:id`,
   authMiddleware,
   adminMiddleware,
-  playerService.delete,
+  matchService.delete,
 )
 
 

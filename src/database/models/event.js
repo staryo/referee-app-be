@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      
       goal_author_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -33,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      team_number: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      }
     },
     {
       sequelize,

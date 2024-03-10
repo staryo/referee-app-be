@@ -6,9 +6,10 @@ const userRouter = require("./userRouter")
 const tournamentRouter = require("./tournamentRouter")
 const playerRouter = require("./playerRouter")
 const teamRouter = require("./teamRouter")
+const matchRouter = require("./matchRouter")
 
 const {
-  AUTH, USER, TOURNAMENT, PLAYER, TEAM
+  AUTH, USER, TOURNAMENT, PLAYER, TEAM, MATCH
 } = require("./consts");
 
 router.use(AUTH, authRouter)
@@ -16,5 +17,6 @@ router.use(USER, userRouter)
 router.use(TOURNAMENT, tournamentRouter)
 router.use(PLAYER, playerRouter)
 router.use(TEAM, teamRouter)
+router.use(MATCH, matchRouter)
 
 module.exports = router
