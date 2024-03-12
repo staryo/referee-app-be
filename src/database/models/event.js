@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      assist_author_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       match_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
