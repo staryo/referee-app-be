@@ -84,7 +84,7 @@ class matchService {
       })
       const team1count = match.events.filter(row => row.team_number === 1).length
       const team2count = match.events.filter(row => row.team_number === 2).length
-      return res.json({match, team1count, team2count})
+      return res.json({ match, team1count, team2count })
     } catch (e) {
       next(ApiError.badRequest(e.message))
     }
@@ -103,6 +103,57 @@ class matchService {
     }
   }
 
+  async start(req, res, next) {
+    try {
+      const { id } = req.params
+
+      const match = await Match.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (match.is_period_completed) {
+        match.current_period += 1
+        match.is_period_completed = false
+        match.start_time = new Date().getTime()
+        return res.json(
+          await match.save(),
+        )
+      } else {
+        match.start_time = new Date().getTime()
+        return res.json(
+          await match.save(),
+        )
+      }
+    } catch (e) {
+      next(ApiError.badRequest(e.message))
+    }
+  }
+
+  async finish(req, res, next) {
+    try {
+      const { id } = req.params
+
+      const match = await Match.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (!match.is_period_completed) {
+        match.is_period_completed = true
+        match.start_time = 0
+        return res.json(
+          await match.save(),
+        )
+      } else {
+        return res.json()
+      }
+    } catch (e) {
+      next(ApiError.badRequest(e.message))
+    }
+  }
 }
 
 module.exports = new matchService()

@@ -54,4 +54,16 @@ router.delete(`${DELETE}/:id`,
   matchService.delete,
 )
 
+// --- /api/match/start/:id [GET] --- //
+router.get(`/start/:id`,
+  authMiddleware,
+  matchService.start,
+)
+
+// --- /api/match/finish/:id [GET] --- //
+router.get(`/start/:id`,
+  authMiddleware,
+  matchService.finish,
+)
+
 module.exports = router
