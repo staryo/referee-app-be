@@ -35,8 +35,6 @@ router.put(`${UPDATE}/:id`,
       first_name: { type: "string", minLength: 2 },
       last_name: { type: "string", minLength: 2 },
       description: { type: "string" },
-
-
     },
     required: [],
   }),
@@ -55,6 +53,5 @@ router.delete(`${DELETE}/:id`,
   adminMiddleware,
   matchService.delete,
 )
-
 
 module.exports = router
