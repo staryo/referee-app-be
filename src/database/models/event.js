@@ -16,18 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      goal_author_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      assist_author_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      match_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
       time: {
         type: DataTypes.TIME,
         allowNull: false,

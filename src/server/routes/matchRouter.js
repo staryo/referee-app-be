@@ -48,11 +48,6 @@ router.get(`${DATA}/:id`,
   authMiddleware,
   matchService.data,
 )
-// --- /api/match/count/:id [GET] --- //
-router.get(`/api/match/count/:id`,
-  authMiddleware,
-  matchService.count,
-)
 
 // --- /api/match/delete/:id [DELETE] --- //
 router.delete(`${DELETE}/:id`,

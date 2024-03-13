@@ -68,11 +68,11 @@ class matchService {
           },
           {
             model: Team,
-            as: "team1"
+            as: "team1",
           },
           {
             model: Team,
-            as: "team2"
+            as: "team2",
           },
           {
             model: Player,
@@ -82,12 +82,13 @@ class matchService {
           },
         ],
       })
-      return res.json(match)
+      const team1count = match.events.filter(row => row.team_number === 1).length
+      const team2count = match.events.filter(row => row.team_number === 2).length
+      return res.json({match, team1count, team2count})
     } catch (e) {
       next(ApiError.badRequest(e.message))
     }
   }
-
 
   async delete(req, res, next) {
     try {
