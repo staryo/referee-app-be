@@ -8,6 +8,7 @@ const TOURNAMENT = "/tournament"
 const PLAYER = "/player"
 const TEAM = "/team"
 const MATCH = "/match"
+const EVENT = "/event"
 
 // --- methods api --- //
 const SIGNUP = "/signup"
@@ -20,7 +21,7 @@ const UPDATE = "/update"
 const GET_ALL = "/get_all"
 
 module.exports = {
-  API, USER, TOURNAMENT, PLAYER, TEAM, MATCH,
+  API, USER, TOURNAMENT, PLAYER, TEAM, MATCH, EVENT,
   AUTH, UPDATE,
   SIGNUP, LOGIN, LOGOUT,
   CREATE, DATA, DELETE, GET_ALL,

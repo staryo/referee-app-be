@@ -16,10 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      match_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
       time: {
         type: DataTypes.TIME,
         allowNull: false,

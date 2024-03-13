@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       match.belongsTo(models.team, { as: "team1" }); // Adds team1Id to Match
       match.belongsTo(models.team, { as: "team2" }); // Adds team2Id to Match
       match.hasMany(models.event)
-      match.belongsToMany(models.player, {through: "match_player"})
+      match.belongsToMany(models.player, { through: "match_player" })
     }
   }
 
