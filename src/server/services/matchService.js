@@ -113,15 +113,15 @@ class matchService {
         },
       });
 
-      if (match.is_period_completed) {
+      if (match.is_period_completed || match.current_period === 0) {
         match.current_period += 1
         match.is_period_completed = false
-        match.start_time = new Date().getTime()
+        match.start_time = new Date()
         return res.json(
           await match.save(),
         )
       } else {
-        match.start_time = new Date().getTime()
+        match.start_time = new Date()
         return res.json(
           await match.save(),
         )
@@ -143,7 +143,7 @@ class matchService {
 
       if (!match.is_period_completed) {
         match.is_period_completed = true
-        match.start_time = 0
+        match.start_time = undefined
         return res.json(
           await match.save(),
         )

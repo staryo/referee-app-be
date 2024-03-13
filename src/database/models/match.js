@@ -31,8 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false
       },
       start_time: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0
+        type: DataTypes.DATE
       }
     },
     {
