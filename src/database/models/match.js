@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       is_period_completed: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        defaultValue: true
       },
       start_time: {
         type: DataTypes.DATE
