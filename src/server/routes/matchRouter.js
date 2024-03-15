@@ -59,6 +59,12 @@ router.get(`/start/:id`,
   authMiddleware,
   matchService.start,
 )
+// --- /api/match/result/:id [GET] --- //
+router.get(`result/:id`,
+  authMiddleware,
+  matchService.result,
+)
+
 
 // --- /api/match/finish/:id [GET] --- //
 router.get(`/finish/:id`,

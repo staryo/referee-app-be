@@ -1,5 +1,7 @@
 const { db } = require("../../database/models");
 const ApiError = require("../error/ApiError");
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
 const Tournament = db.tournament
 const Team = db.team
 const Match = db.match
@@ -154,6 +156,82 @@ class matchService {
       next(ApiError.badRequest(e.message))
     }
   }
+
+
+async result(req, res, next) {
+  try {
+    const { id } = req.params;
+    const match = await Match.findOne({
+      where: {
+        id,
+      },
+      include: [
+        {
+          model: Tournament,
+        },
+        {
+          model: Team,
+          as: "team1",
+        },
+        {
+          model: Team,
+          as: "team2",
+        },
+        {
+          model: Player,
+        },
+        {
+          model: Event,
+        },
+      ],
+    });
+
+   
+    const doc = new PDFDocument();
+    const filePath = `match_${id}.pdf`; 
+    const stream = fs.createWriteStream(filePath);
+
+    doc.pipe(stream);
+    doc.fontSize(16).text(`Информация о матче: ${match.name} `, { align: 'center' });
+    doc.moveDown();
+
+    doc.fontSize(14).text('Турнир:', { continued: true }).text(JSON.stringify(match.Tournament));
+    doc.moveDown();
+
+    doc.fontSize(14).text('Команда 1:', { continued: true }).text(JSON.stringify(match.team1));
+    doc.moveDown();
+    doc.fontSize(14).text('Команда 2:', { continued: true }).text(JSON.stringify(match.team2));
+    doc.moveDown();
+
+    doc.fontSize(14).text('Матч:', { continued: true }).text(JSON.stringify(match));
+    doc.moveDown();
+
+    doc.fontSize(14).text('Игроки:', { continued: true }).text(JSON.stringify(match.Player));
+    doc.moveDown();
+
+    doc.fontSize(14).text('События:', { continued: true }).text(JSON.stringify(match.Event));
+    doc.moveDown();
+
+    doc.end();
+
+    stream.on('finish', () => {
+      res.download(filePath, `match_${id}.pdf`, err => {
+        if (err) {
+          next(ApiError.internal('Ошибка скачивания PDF'));
+        } else {
+          // Удаляем временный файл
+          fs.unlinkSync(filePath);
+        }
+      });
+    });
+  } catch (e) {
+    next(ApiError.badRequest(e.message));
+  }
+}
+
+
+  
+ 
 }
 
 module.exports = new matchService()
