@@ -2,6 +2,7 @@ const { db } = require("../../database/models");
 const ApiError = require("../error/ApiError");
 const Tournament = db.tournament
 const Team = db.team
+const Player = db.player
 
 class teamService {
   async create(req, res, next) {
@@ -47,9 +48,14 @@ class teamService {
         where: {
           id,
         },
-        include: {
-          Tournament,
-        },
+        include: [
+          {
+            Tournament,
+          },
+          {
+            Player,
+          },
+        ],
       })
       return res.json(team)
     } catch (e) {
