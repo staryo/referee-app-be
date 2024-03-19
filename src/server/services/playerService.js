@@ -1,19 +1,19 @@
 const { db } = require("../../database/models");
 const ApiError = require("../error/ApiError");
-const Tournament = db.tournament
+const Team = db.team
 const Player = db.player
 
 class playerService {
   async create(req, res, next) {
     try {
       const player_data = req.body
-      const tournament = await Tournament.findOne({
+      const team = await Team.findOne({
         where: {
-          id: req.body.tournament_id,
+          id: req.body.team_id,
         },
       })
       const player = await Player.create(player_data)
-      await tournament.addPlayer(player)
+      await team.addPlayer(player)
 
       return res.json(player)
     } catch (e) {
@@ -48,7 +48,7 @@ class playerService {
           id,
         },
         include: {
-          Tournament,
+          Team,
         },
       })
       return res.json(player)
