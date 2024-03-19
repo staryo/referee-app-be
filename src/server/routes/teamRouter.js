@@ -37,13 +37,13 @@ router.put(`${UPDATE}/:id`,
   teamService.update,
 )
 
-// --- /api/player/data/:id [GET] --- //
+// --- /api/team/data/:id [GET] --- //
 router.get(`${DATA}/:id`,
   authMiddleware,
   teamService.data,
 )
 
-// --- /api/player/delete/:id [DELETE] --- //
+// --- /api/team/delete/:id [DELETE] --- //
 router.delete(`${DELETE}/:id`,
   authMiddleware,
   adminMiddleware,

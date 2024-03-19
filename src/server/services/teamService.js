@@ -50,10 +50,10 @@ class teamService {
         },
         include: [
           {
-            Tournament,
+            model: Player,
           },
           {
-            Player,
+            model: Tournament,
           },
         ],
       })
