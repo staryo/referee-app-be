@@ -75,10 +75,10 @@ class matchService {
             as: "team2",
           },
           {
-            model: Player,
-          },
-          {
             model: Event,
+            include: {
+              model: Player
+            }
           },
         ],
       })
